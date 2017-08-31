@@ -12,6 +12,7 @@ using MongoDB.Driver;
 using NLog.Common;
 using NLog.Config;
 using NLog.Targets;
+using System.Collections;
 
 namespace NLog.Mongo
 {
@@ -239,10 +240,50 @@ namespace NLog.Mongo
                     continue;
 
                 string key = Convert.ToString(property.Key, CultureInfo.InvariantCulture);
-                string value = Convert.ToString(property.Value, CultureInfo.InvariantCulture);
+                
+                if (property.Value is Int32)
+                {
+                    propertiesDocument[key] = new BsonInt32((Int32)property.Value);
+                }
+                else if (property.Value is Int64)
+                {
+                    propertiesDocument[key] = new BsonInt64((Int64)property.Value);
+                }
+                else if (property.Value is bool)
+                {
+                    propertiesDocument[key] = new BsonBoolean((bool)property.Value);
+                }
+                else if (property.Value is DateTime)
+                {
+                    propertiesDocument[key] = new BsonDateTime((DateTime)property.Value);
+                }
+                else if (property.Value is decimal)
+                {
+                    propertiesDocument[key] = new BsonDecimal128((decimal)property.Value);
+                }
+                else if (property.Value is double)
+                {
+                    propertiesDocument[key] = new BsonDouble((double)property.Value);
+                }
+                else if (property.Value.GetType().IsArray)
+                {
+                    propertiesDocument[key] = new BsonArray(property.Value as IEnumerable);
+                }
+                else if (property.Value is IDictionary)
+                {
+                    propertiesDocument[key] = new BsonDocument(property.Value as IDictionary);
+                }
+                else if (property.Value is string)
+                {
+                    string value = Convert.ToString(property.Value, CultureInfo.InvariantCulture);
 
-                if (!string.IsNullOrEmpty(value))
-                    propertiesDocument[key] = new BsonString(value);
+                    if (!string.IsNullOrEmpty(value))
+                        propertiesDocument[key] = new BsonString(value);
+                }
+                else
+                {
+                    propertiesDocument[key] = property.Value.ToBsonDocument();
+                }
             }
 
             if (propertiesDocument.ElementCount > 0)
@@ -343,7 +384,7 @@ namespace NLog.Mongo
                 // create capped
                 var options = new CreateCollectionOptions
                 {
-                    Capped = true, 
+                    Capped = true,
                     MaxSize = CappedCollectionSize,
                     MaxDocuments = CappedCollectionMaxItems
                 };

@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog.Fluent;
 
 namespace NLog.Mongo.ConsoleTest
 {
@@ -14,35 +9,22 @@ namespace NLog.Mongo.ConsoleTest
         
         public static void Main(string[] args)
         {
-            int k = 42;
-            int l = 100;
+            var logEventInfo = new LogEventInfo();
+            logEventInfo.Level = LogLevel.Info;
 
-            _logger.Trace("Sample trace message, k={0}, l={1}", k, l);
-            _logger.Debug("Sample debug message, k={0}, l={1}", k, l);
-            _logger.Info("Sample informational message, k={0}, l={1}", k, l);
-            _logger.Warn("Sample warning message, k={0}, l={1}", k, l);
-            _logger.Error("Sample error message, k={0}, l={1}", k, l);
-            _logger.Fatal("Sample fatal error message, k={0}, l={1}", k, l);
-            _logger.Log(LogLevel.Info, "Sample fatal error message, k={0}, l={1}", k, l);
+            logEventInfo.Properties.Add("stringValue", "Kamil ÖZTÜRK");
+            logEventInfo.Properties.Add("arrayValue", new object[] { 1, "Kamil", DateTime.Now, true, 2.5 });
+            logEventInfo.Properties.Add("dictionaryValue", new Dictionary<string, object>() { { "columnA", "value A" }, { "columnB", DateTime.Now } });
+            logEventInfo.Properties.Add("objectValue", new { name = "Kamil", lastname = "OZTURK" });
+            logEventInfo.Properties.Add("integerValue", 1);
+            //if server supports
+            //logEventInfo.Properties.Add("decimalValue", 2.5m);
+            logEventInfo.Properties.Add("doubleValue", 3.5d);
+            logEventInfo.Properties.Add("dateValue", DateTime.UtcNow);
+            logEventInfo.Properties.Add("booleanValue", true);
 
-            _logger.Info()
-                .Message("Sample informational message, k={0}, l={1}", k, l)
-                .Property("Test", "Tesing properties")
-                .Write();
-
-            string path = "blah.txt";
-            try
-            {
-                string text = File.ReadAllText(path);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error()
-                    .Message("Error reading file '{0}'.", path)
-                    .Exception(ex)
-                    .Property("Test", "ErrorWrite")
-                    .Write();
-            }
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Log(logEventInfo);
 
             Console.ReadLine();
         }
