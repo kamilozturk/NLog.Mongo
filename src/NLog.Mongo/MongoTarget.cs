@@ -224,6 +224,7 @@ namespace NLog.Mongo
         private void AddProperties(BsonDocument document, LogEventInfo logEvent)
         {
             var propertiesDocument = new BsonDocument();
+
             foreach (var field in Properties)
             {
                 string key = field.Name;
@@ -234,13 +235,14 @@ namespace NLog.Mongo
             }
 
             var properties = logEvent.Properties ?? Enumerable.Empty<KeyValuePair<object, object>>();
+
             foreach (var property in properties)
             {
                 if (property.Key == null || property.Value == null)
                     continue;
 
                 string key = Convert.ToString(property.Key, CultureInfo.InvariantCulture);
-                
+
                 if (property.Value is Int32)
                 {
                     propertiesDocument[key] = new BsonInt32((Int32)property.Value);
@@ -287,8 +289,7 @@ namespace NLog.Mongo
             }
 
             if (propertiesDocument.ElementCount > 0)
-                document.Add("Properties", propertiesDocument);
-
+                document.Merge(propertiesDocument);
         }
 
         private BsonValue CreateException(Exception exception)
