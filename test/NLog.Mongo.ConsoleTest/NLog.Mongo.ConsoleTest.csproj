@@ -15,6 +15,9 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/kamilozturk/NLog.Mongo/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/kamilozturk/NLog.Mongo</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/kamilozturk/NLog.Mongo</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NLog.Mongo.ConsoleTest")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Novus Media Inc")]
+[assembly: AssemblyCompany("KamiL OZTURK")]
 [assembly: AssemblyProduct("NLog.Mongo.ConsoleTest")]
-[assembly: AssemblyCopyright("Copyright © Novus Media Inc 2013")]
+[assembly: AssemblyCopyright("Copyright © 2017 KamiL OZTURK")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
