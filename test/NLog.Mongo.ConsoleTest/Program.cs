@@ -9,8 +9,10 @@ namespace NLog.Mongo.ConsoleTest
         
         public static void Main(string[] args)
         {
-            var logEventInfo = new LogEventInfo();
-            logEventInfo.Level = LogLevel.Info;
+            var logEventInfo = new LogEventInfo()
+            {
+                Level = LogLevel.Info
+            };
 
             logEventInfo.Properties.Add("stringValue", "Kamil ÖZTÜRK");
             logEventInfo.Properties.Add("arrayValue", new object[] { 1, "Kamil", DateTime.Now, true, 2.5 });
